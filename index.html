@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VitalTrack – Health Monitor</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="noise"></div>
+
+  <header>
+    <div class="logo">
+      <span class="pulse-dot"></span>
+      VitalTrack
+    </div>
+    <div class="date-time" id="datetime"></div>
+  </header>
+
+  <main>
+    <!-- Hero Stats -->
+    <section class="hero-stats">
+      <div class="stat-card primary" id="heart-card">
+        <div class="stat-label">Heart Rate</div>
+        <div class="stat-value"><span id="heart-rate">72</span><span class="unit">bpm</span></div>
+        <canvas id="heart-chart" width="200" height="60"></canvas>
+        <div class="stat-status good">Normal</div>
+      </div>
+
+      <div class="stat-card" id="bp-card">
+        <div class="stat-label">Blood Pressure</div>
+        <div class="stat-value"><span id="bp-val">120/80</span><span class="unit">mmHg</span></div>
+        <div class="bp-bar-wrap">
+          <div class="bp-bar" id="bp-bar"></div>
+        </div>
+        <div class="stat-status good">Optimal</div>
+      </div>
+
+      <div class="stat-card" id="spo2-card">
+        <div class="stat-label">SpO₂</div>
+        <div class="stat-value"><span id="spo2-val">98</span><span class="unit">%</span></div>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 80 80" class="ring-svg">
+            <circle cx="40" cy="40" r="32" class="ring-bg"/>
+            <circle cx="40" cy="40" r="32" class="ring-fill" id="spo2-ring" stroke-dasharray="201" stroke-dashoffset="4"/>
+          </svg>
+        </div>
+        <div class="stat-status good">Excellent</div>
+      </div>
+
+      <div class="stat-card" id="temp-card">
+        <div class="stat-label">Temperature</div>
+        <div class="stat-value"><span id="temp-val">36.6</span><span class="unit">°C</span></div>
+        <div class="thermo-wrap">
+          <div class="thermo">
+            <div class="thermo-fill" id="thermo-fill"></div>
+          </div>
+        </div>
+        <div class="stat-status good">Normal</div>
+      </div>
+    </section>
+
+    <!-- Activity & Sleep -->
+    <section class="mid-row">
+      <div class="card activity-card">
+        <h2>Daily Activity</h2>
+        <div class="activity-grid">
+          <div class="activity-item">
+            <div class="activity-icon">🦶</div>
+            <div class="activity-info">
+              <div class="activity-val" id="steps">8,420</div>
+              <div class="activity-lbl">Steps</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:84%"></div></div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">🔥</div>
+            <div class="activity-info">
+              <div class="activity-val" id="calories">1,240</div>
+              <div class="activity-lbl">Calories</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:62%"></div></div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">💧</div>
+            <div class="activity-info">
+              <div class="activity-val" id="water">1.8L</div>
+              <div class="activity-lbl">Hydration</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">⚡</div>
+            <div class="activity-info">
+              <div class="activity-val" id="active-min">47</div>
+              <div class="activity-lbl">Active Min</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:78%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card sleep-card">
+        <h2>Sleep Quality</h2>
+        <div class="sleep-score-wrap">
+          <svg viewBox="0 0 120 120" class="sleep-svg">
+            <circle cx="60" cy="60" r="50" class="sleep-bg"/>
+            <circle cx="60" cy="60" r="50" class="sleep-arc" id="sleep-arc"
+              stroke-dasharray="314" stroke-dashoffset="94"/>
+          </svg>
+          <div class="sleep-score-inner">
+            <div class="sleep-score">82</div>
+            <div class="sleep-lbl">Score</div>
+          </div>
+        </div>
+        <div class="sleep-phases">
+          <div class="phase"><span class="phase-dot deep"></span> Deep 1h 42m</div>
+          <div class="phase"><span class="phase-dot rem"></span> REM 1h 18m</div>
+          <div class="phase"><span class="phase-dot light"></span> Light 3h 10m</div>
+        </div>
+        <div class="sleep-total">Total: <strong>7h 28m</strong></div>
+      </div>
+    </section>
+
+    <!-- Log & Alerts -->
+    <section class="bottom-row">
+      <div class="card log-card">
+        <h2>Log Vitals</h2>
+        <div class="form-group">
+          <label>Heart Rate (bpm)</label>
+          <input type="number" id="input-hr" placeholder="e.g. 72" min="40" max="200"/>
+        </div>
+        <div class="form-group">
+          <label>Blood Pressure</label>
+          <input type="text" id="input-bp" placeholder="e.g. 120/80"/>
+        </div>
+        <div class="form-group">
+          <label>Weight (kg)</label>
+          <input type="number" id="input-weight" placeholder="e.g. 70.5" step="0.1"/>
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <input type="text" id="input-notes" placeholder="How are you feeling?"/>
+        </div>
+        <button class="log-btn" onclick="logEntry()">Save Entry</button>
+        <div id="log-msg" class="log-msg"></div>
+      </div>
+
+      <div class="card history-card">
+        <h2>Recent Entries</h2>
+        <div class="history-list" id="history-list">
+          <div class="history-item">
+            <span class="h-date">Today, 08:30</span>
+            <span class="h-hr">❤️ 70 bpm</span>
+            <span class="h-bp">🩺 118/78</span>
+            <span class="h-note">Felt great after run</span>
+          </div>
+          <div class="history-item">
+            <span class="h-date">Yesterday, 21:00</span>
+            <span class="h-hr">❤️ 75 bpm</span>
+            <span class="h-bp">🩺 122/82</span>
+            <span class="h-note">Slight headache</span>
+          </div>
+          <div class="history-item">
+            <span class="h-date">Mar 1, 09:15</span>
+            <span class="h-hr">❤️ 68 bpm</span>
+            <span class="h-bp">🩺 116/76</span>
+            <span class="h-note">Good morning</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card alerts-card">
+        <h2>Health Alerts</h2>
+        <div class="alerts-list" id="alerts-list">
+          <div class="alert-item info">
+            <span class="alert-icon">💧</span>
+            <div>
+              <div class="alert-title">Hydration Reminder</div>
+              <div class="alert-sub">Drink 200ml more to hit your goal</div>
+            </div>
+          </div>
+          <div class="alert-item success">
+            <span class="alert-icon">✅</span>
+            <div>
+              <div class="alert-title">Step Goal Almost Reached</div>
+              <div class="alert-sub">1,580 steps left for today</div>
+            </div>
+          </div>
+          <div class="alert-item warning">
+            <span class="alert-icon">😴</span>
+            <div>
+              <div class="alert-title">Bedtime Suggestion</div>
+              <div class="alert-sub">Aim for 10:30 PM for optimal sleep</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
