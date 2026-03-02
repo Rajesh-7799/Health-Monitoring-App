@@ -19,7 +19,7 @@ A beautiful, responsive health monitoring dashboard built with vanilla HTML, CSS
 ### Option 1: Open Directly
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/health-monitor-app.git
+git clone https://github.com/rajesh-7799/health-monitor-app.git
 
 # Open in browser
 open health-monitor-app/index.html
